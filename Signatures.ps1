@@ -1,10 +1,10 @@
-﻿# Ensure Clear-Host or cls is available
+﻿# Asegurarse de que Clear-Host o cls esté disponible
 if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
     Clear-Host
 } elseif (Get-Command cls -ErrorAction SilentlyContinue) {
     cls
 } else {
-    Write-Warning "Clear-Host or cls is not available."
+    Write-Warning "Clear-Host o cls no está disponible."
 }
 
 Write-Host @"
@@ -27,20 +27,20 @@ function Test-Admin {
         $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
         return $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
     } Catch {
-        Write-Warning "Unable to determine if the script is running as admin."
+        Write-Warning "No se puede determinar si el script se está ejecutando como administrador."
         return $false
     }
 }
 
 if (!(Test-Admin)) {
-    Write-Warning "Please Run This Script as Admin."
+    Write-Warning "Por favor, ejecute este script como administrador."
     Start-Sleep 10
     Exit
 }
 
 Start-Sleep -s 1
 
-# Ensure Clear-Host or cls is available again
+# Asegurarse de que Clear-Host o cls esté disponible nuevamente
 if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
     Clear-Host
 } elseif (Get-Command cls -ErrorAction SilentlyContinue) {
@@ -58,7 +58,7 @@ foreach ($file in $possiblePathsFiles) {
 }
 
 if (-not $pathsFilePath) {
-    Write-Warning "None of the files ($($possiblePathsFiles -join ', ')) exist."
+    Write-Warning "Ninguno de los archivos ($($possiblePathsFiles -join ', ')) existe."
     Start-Sleep 10
     Exit
 }
@@ -66,7 +66,7 @@ if (-not $pathsFilePath) {
 Try {
     $lines = Get-Content $pathsFilePath
 } Catch {
-    Write-Warning "Failed to read the file: $pathsFilePath"
+    Write-Warning "No se pudo leer el archivo: $pathsFilePath"
     Start-Sleep 10
     Exit
 }
@@ -85,7 +85,7 @@ function Show-Progress {
     $progressBarLength = 50
     $progressChars = [math]::Round(($percentage / 100) * $progressBarLength)
     $progressBar = ("-" * $progressChars).PadRight($progressBarLength)
-    Write-Host -NoNewline "`r[$progressBar] $percentage% Complete"
+    Write-Host -NoNewline "`r[$progressBar] $percentage% Completo"
 }
 
 foreach ($line in $lines) {
@@ -109,7 +109,7 @@ foreach ($line in $lines) {
 
                     $results += $fileDetails
                 } Catch {
-                    Write-Warning "Failed to get signature for file: $path"
+                    Write-Warning "No se pudo obtener la firma del archivo: $path"
                 }
             }
         }
@@ -121,6 +121,6 @@ $stopwatch.Stop()
 $time = $stopwatch.Elapsed.Hours.ToString("00") + ":" + $stopwatch.Elapsed.Minutes.ToString("00") + ":" + $stopwatch.Elapsed.Seconds.ToString("00") + "." + $stopwatch.Elapsed.Milliseconds.ToString("000")
 
 Write-Host "`n"
-Write-Host "The scan took $time to run." -ForegroundColor Yellow
+Write-Host "El escaneo tomó $time en ejecutarse." -ForegroundColor Yellow
 
-$results | Out-GridView -PassThru -Title 'Signatures Results'
+$results | Out-GridView -PassThru -Title 'Resultados de las Firmas'
