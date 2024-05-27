@@ -1,4 +1,13 @@
-﻿Write-Host @"
+﻿# Ensure Clear-Host or cls is available
+if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
+    Clear-Host
+} elseif (Get-Command cls -ErrorAction SilentlyContinue) {
+    cls
+} else {
+    Write-Warning "Clear-Host or cls is not available."
+}
+
+Write-Host @"
 
  ███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ████████╗██╗   ██╗██████╗ ███████╗███████╗
  ██╔════╝██║██╔════╝ ████╗  ██║██╔══██╗╚══██╔══╝██║   ██║██╔══██╗██╔════╝██╔════╝
@@ -11,12 +20,18 @@
 Write-Host ""
 Write-Host "  Made by spokwn kjj - " -ForegroundColor Gray -NoNewline
 Write-Host -ForegroundColor DarkMagenta "discord.gg/astralmc"
-
 Write-Host ""
+
 function Test-Admin {
-    $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
-    $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    Try {
+        $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
+        return $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    } Catch {
+        Write-Warning "Unable to determine if the script is running as admin."
+        return $false
+    }
 }
+
 if (!(Test-Admin)) {
     Write-Warning "Please Run This Script as Admin."
     Start-Sleep 10
@@ -24,6 +39,13 @@ if (!(Test-Admin)) {
 }
 
 Start-Sleep -s 1
+
+# Ensure Clear-Host or cls is available again
+if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
+    Clear-Host
+} elseif (Get-Command cls -ErrorAction SilentlyContinue) {
+    cls
+}
 
 $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
 $pathsFilePath = $null
@@ -41,9 +63,15 @@ if (-not $pathsFilePath) {
     Exit
 }
 
-$lines = Get-Content $pathsFilePath
-$stopwatch = [Diagnostics.Stopwatch]::StartNew()
+Try {
+    $lines = Get-Content $pathsFilePath
+} Catch {
+    Write-Warning "Failed to read the file: $pathsFilePath"
+    Start-Sleep 10
+    Exit
+}
 
+$stopwatch = [Diagnostics.Stopwatch]::StartNew()
 $results = @()
 $count = 0
 $totalCount = $lines.Count
@@ -53,7 +81,6 @@ function Show-Progress {
         [int]$current,
         [int]$total
     )
-
     $percentage = [math]::Round(($current / $total) * 100)
     $progressBarLength = 50
     $progressChars = [math]::Round(($percentage / 100) * $progressBarLength)
@@ -82,6 +109,7 @@ foreach ($line in $lines) {
 
                     $results += $fileDetails
                 } Catch {
+                    Write-Warning "Failed to get signature for file: $path"
                 }
             }
         }
