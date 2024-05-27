@@ -1,4 +1,4 @@
-﻿Clear-Host
+﻿cls
 
 Write-Host @"
 
