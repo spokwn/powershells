@@ -1,6 +1,4 @@
-﻿clear
-
-Write-Host @"
+﻿Write-Host @"
 
  ███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ████████╗██╗   ██╗██████╗ ███████╗███████╗
  ██╔════╝██║██╔════╝ ████╗  ██║██╔══██╗╚══██╔══╝██║   ██║██╔══██╗██╔════╝██╔════╝
@@ -27,13 +25,9 @@ if (!(Test-Admin)) {
 
 Start-Sleep -s 1
 
-clear
-
-# Lista de archivos posibles
 $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
 $pathsFilePath = $null
 
-# Encontrar el primer archivo existente en la lista
 foreach ($file in $possiblePathsFiles) {
     if (Test-Path -Path $file) {
         $pathsFilePath = $file
@@ -71,13 +65,10 @@ foreach ($line in $lines) {
     $count++
     Show-Progress -current $count -total $totalCount
 
-    # Verificar si la línea contiene `:\`
     if ($line -match '([A-Za-z]):\\') {
         $index = $line.IndexOf($matches[0])
         if ($index -ge 0) {
             $path = $line.Substring($index)
-            
-            # Verificar si la ruta es un archivo existente
             if (Test-Path -Path $path -PathType Leaf) {
                 Try {
                     $fileName = Split-Path $path -Leaf
@@ -91,7 +82,6 @@ foreach ($line in $lines) {
 
                     $results += $fileDetails
                 } Catch {
-                    # Manejar excepciones si es necesario
                 }
             }
         }
