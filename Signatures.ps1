@@ -1,4 +1,4 @@
-﻿cls
+﻿clear
 
 Write-Host @"
 
@@ -27,7 +27,7 @@ if (!(Test-Admin)) {
 
 Start-Sleep -s 1
 
-cls
+clear
 
 # Lista de archivos posibles
 $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
