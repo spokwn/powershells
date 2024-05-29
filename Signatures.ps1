@@ -1,14 +1,10 @@
-﻿function Clear-Screen {
-    Clear-Host 2>$null
-    if (-not $?) {
-        cls 2>$null
-        if (-not $?) {
-            Write-Warning "Clear-Host o cls no está disponible."
-        }
-    }
+﻿if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
+    Clear-Host
+} elseif (Get-Command cls -ErrorAction SilentlyContinue) {
+    cls
+} else {
+    Write-Warning "Clear-Host o cls no está disponible."
 }
-
-Clear-Screen
 
 Write-Host @"
  ███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ████████╗██╗   ██╗██████╗ ███████╗███████╗
@@ -25,14 +21,14 @@ Write-Host ""
 
 
 Start-Sleep -s 1
-Clear-Screen
+cls
 
 $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
 $pathsFilePath = $possiblePathsFiles | Where-Object { Test-Path $_ } | Select-Object -First 1
 
 if (-not $pathsFilePath) {
     Write-Warning "Ninguno de los archivos ($($possiblePathsFiles -join ', ')) existe."
-    Start-Sleep 10
+    Start-Sleep 3
     Exit
 }
 
@@ -40,7 +36,7 @@ Try {
     $lines = Get-Content $pathsFilePath
 } Catch {
     Write-Warning "No se pudo leer el archivo: $pathsFilePath"
-    Start-Sleep 10
+    Start-Sleep 3
     Exit
 }
 
