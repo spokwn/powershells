@@ -1,10 +1,5 @@
-﻿if (Get-Command Clear-Host -ErrorAction SilentlyContinue) {
-    Clear-Host
-} elseif (Get-Command cls -ErrorAction SilentlyContinue) {
-    cls
-} else {
-    Write-Warning "Clear-Host o cls no está disponible."
-}
+﻿cls
+cls
 
 Write-Host @"
  ███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ████████╗██╗   ██╗██████╗ ███████╗███████╗
