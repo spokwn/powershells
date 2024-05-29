@@ -19,7 +19,6 @@ Write-Host "  Made by spokwn kjj - " -ForegroundColor Gray -NoNewline
 Write-Host -ForegroundColor DarkMagenta "discord.gg/astralmc"
 Write-Host ""
 
-
 Start-Sleep -s 1
 cls
 
@@ -49,27 +48,27 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
     Write-Progress -Activity "Procesando líneas" -Status "$($i + 1) de $($lines.Count)" -PercentComplete (($i / $lines.Count) * 100)
 
     if ($line -match '([A-Za-z]).') {
-     if ($line -match '([A-Za-z]):\\') {
-         $index = $line.IndexOf($matches[0])
-         if ($index -ge 0) {
-             $path = $line.Substring($index)
-             if (Test-Path -Path $path -PathType Leaf) {
-                 Try {
-                     $fileName = Split-Path $path -Leaf
-                     $signature = Get-AuthenticodeSignature $path 2>$null
-                     $signatureStatus = $signature.Status
-    
-                     $results += [pscustomobject]@{
-                         Name = $fileName
-                         Path = $path
-                         SignatureStatus = $signatureStatus
-                     }
-                 } Catch {
-                     Write-Warning "No se pudo obtener la firma del archivo: $path"
-                 }
-             }
-         }
-     }
+        if ($line -match '([A-Za-z]):\\') {
+            $index = $line.IndexOf($matches[0])
+            if ($index -ge 0) {
+                $path = $line.Substring($index)
+                if (Test-Path -Path $path -PathType Leaf) {
+                    Try {
+                        $fileName = Split-Path $path -Leaf
+                        $signature = Get-AuthenticodeSignature $path 2>$null
+                        $signatureStatus = $signature.Status
+
+                        $results += [pscustomobject]@{
+                            Name = $fileName
+                            Path = $path
+                            SignatureStatus = $signatureStatus
+                        }
+                    } Catch {
+                        Write-Warning "No se pudo obtener la firma del archivo: $path"
+                    }
+                }
+            }
+        }
     }
 }
 
