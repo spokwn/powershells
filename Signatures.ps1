@@ -17,6 +17,45 @@ Write-Host ""
 Start-Sleep -s 1
 cls
 
+function Get-DeviceMappings {
+    $DynAssembly = New-Object System.Reflection.AssemblyName('SysUtils')
+    $AssemblyBuilder = [AppDomain]::CurrentDomain.DefineDynamicAssembly($DynAssembly, [Reflection.Emit.AssemblyBuilderAccess]::Run)
+    $ModuleBuilder = $AssemblyBuilder.DefineDynamicModule('SysUtils', $False)
+
+    $TypeBuilder = $ModuleBuilder.DefineType('Kernel32', 'Public, Class')
+    $PInvokeMethod = $TypeBuilder.DefinePInvokeMethod('QueryDosDevice', 'kernel32.dll', ([Reflection.MethodAttributes]::Public -bor [Reflection.MethodAttributes]::Static), [Reflection.CallingConventions]::Standard, [UInt32], [Type[]]@([String], [Text.StringBuilder], [UInt32]), [Runtime.InteropServices.CallingConvention]::Winapi, [Runtime.InteropServices.CharSet]::Auto)
+    $DllImportConstructor = [Runtime.InteropServices.DllImportAttribute].GetConstructor(@([String]))
+    $SetLastError = [Runtime.InteropServices.DllImportAttribute].GetField('SetLastError')
+    $SetLastErrorCustomAttribute = New-Object Reflection.Emit.CustomAttributeBuilder($DllImportConstructor, @('kernel32.dll'), [Reflection.FieldInfo[]]@($SetLastError), @($true))
+    $PInvokeMethod.SetCustomAttribute($SetLastErrorCustomAttribute)
+    $Kernel32 = $TypeBuilder.CreateType()
+
+    $Max = 65536
+    $StringBuilder = New-Object System.Text.StringBuilder($Max)
+
+    $driveMappings = Get-WmiObject Win32_Volume | Where-Object { $_.DriveLetter } | ForEach-Object {
+        $ReturnLength = $Kernel32::QueryDosDevice($_.DriveLetter, $StringBuilder, $Max)
+
+        if ($ReturnLength) {
+            @{
+                DriveLetter = $_.DriveLetter
+                DevicePath = $StringBuilder.ToString().ToLower()
+            }
+        }
+    }
+
+    return $driveMappings
+}
+
+$driveMappings = Get-DeviceMappings
+
+function Replace-DevicePaths($line, $driveMappings) {
+    foreach ($driveMapping in $driveMappings) {
+        $line = $line.Replace($driveMapping.DevicePath, $driveMapping.DriveLetter)
+    }
+    return $line
+}
+
 $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
 $pathsFilePath = $possiblePathsFiles | Where-Object { Test-Path $_ } | Select-Object -First 1
 
@@ -41,6 +80,7 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
     $line = $lines[$i]
 
     Write-Progress -Activity "Procesando líneas" -Status "$($i + 1) de $($lines.Count)" -PercentComplete (($i / $lines.Count) * 100)
+    $line = Replace-DevicePaths -line $line -driveMappings $driveMappings
 
     if ($line -match '([A-Za-z]).') {
         if ($line -match '([A-Za-z]):\\') {
