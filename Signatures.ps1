@@ -60,7 +60,7 @@ $possiblePathsFiles = @("Search results.txt", "paths.txt", "p.txt")
 $pathsFilePath = $possiblePathsFiles | Where-Object { Test-Path $_ } | Select-Object -First 1
 
 if (-not $pathsFilePath) {
-    Write-Warning "Ninguno de los archivos ($($possiblePathsFiles -join ', ')) existe."
+    Write-Warning "None of the files ($($possiblePathsFiles -join ', ')) exist."
     Start-Sleep 3
     Exit
 }
@@ -68,7 +68,7 @@ if (-not $pathsFilePath) {
 Try {
     $lines = Get-Content $pathsFilePath
 } Catch {
-    Write-Warning "No se pudo leer el archivo: $pathsFilePath"
+    Write-Warning "Failed to read the file: $pathsFilePath"
     Start-Sleep 3
     Exit
 }
@@ -79,7 +79,7 @@ $results = @()
 for ($i = 0; $i -lt $lines.Count; $i++) {
     $line = $lines[$i]
 
-    Write-Progress -Activity "Procesando líneas" -Status "$($i + 1) de $($lines.Count)" -PercentComplete (($i / $lines.Count) * 100)
+    Write-Progress -Activity "Processing lines" -Status "$($i + 1) of $($lines.Count)" -PercentComplete (($i / $lines.Count) * 100)
     $line = Replace-DevicePaths -line $line -driveMappings $driveMappings
 
     if ($line -match '([A-Za-z]).') {
@@ -87,20 +87,27 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
             $index = $line.IndexOf($matches[0])
             if ($index -ge 0) {
                 $path = $line.Substring($index)
-                if (Test-Path -Path $path -PathType Leaf) {
-                    Try {
-                        $fileName = Split-Path $path -Leaf
-                        $signature = Get-AuthenticodeSignature $path 2>$null
-                        $signatureStatus = $signature.Status
+                if (-not (Test-Path -Path $path -PathType Leaf)) {
+                # Mark file as "DELETED" if not found
+                $results += [pscustomobject]@{
+                    Name = "DELETED"
+                    Path = $line.Substring($index)  # Extracting the correct file path
+                    SignatureStatus = "DELETED"
+                }
+                continue  # Skip further processing for this file
+                }
+                Try {
+                    $fileName = Split-Path $path -Leaf
+                    $signature = Get-AuthenticodeSignature $path 2>$null
+                    $signatureStatus = $signature.Status
 
-                        $results += [pscustomobject]@{
-                            Name = $fileName
-                            Path = $path
-                            SignatureStatus = $signatureStatus
-                        }
-                    } Catch {
-                        Write-Warning "No se pudo obtener la firma del archivo: $path"
+                    $results += [pscustomobject]@{
+                        Name = $fileName
+                        Path = $path
+                        SignatureStatus = $signatureStatus
                     }
+                } Catch {
+                    Write-Warning "Failed to obtain signature for the file: $path"
                 }
             }
         }
@@ -112,6 +119,6 @@ $stopwatch.Stop()
 $time = $stopwatch.Elapsed.ToString("hh\:mm\:ss\.fff")
 
 Write-Host "`n"
-Write-Host "El escaneo tomó $time en ejecutarse." -ForegroundColor Yellow
+Write-Host "Scanning took $time to execute." -ForegroundColor Yellow
 
-$results | Out-GridView -PassThru -Title 'Resultados de las Firmas'
+$results | Out-GridView -PassThru -Title 'Signature Results'
