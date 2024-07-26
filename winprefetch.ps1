@@ -1,4 +1,4 @@
-﻿# By semental & espouken
+﻿# By semental and espouken
 
 function Get-OldestConnectTime {
     $oldestLogon = Get-CimInstance -ClassName Win32_LogonSession | 
