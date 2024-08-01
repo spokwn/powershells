@@ -88,18 +88,22 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
             if ($index -ge 0) {
                 $path = $line.Substring($index)
                 if (-not (Test-Path -Path $path -PathType Leaf)) {
-                # Mark file as "DELETED" if not found
-                $results += [pscustomobject]@{
-                    Name = "DELETED"
-                    Path = $line.Substring($index)  # Extracting the correct file path
-                    SignatureStatus = "DELETED"
-                }
-                continue  # Skip further processing for this file
+                    $results += [pscustomobject]@{
+                        Name = "DELETED"
+                        Path = $line.Substring($index)
+                        SignatureStatus = "DELETED"
+                    }
+                    continue
                 }
                 Try {
                     $fileName = Split-Path $path -Leaf
                     $signature = Get-AuthenticodeSignature $path 2>$null
                     $signatureStatus = $signature.Status
+                    $signerName = $signature.SignerCertificate.Subject
+
+                    if ($signerName -like "*Manthe Industries, LLC*") {
+                        $signatureStatus = "NotSigned (vape client)"
+                    }
 
                     $results += [pscustomobject]@{
                         Name = $fileName
@@ -113,6 +117,7 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
         }
     }
 }
+
 
 $stopwatch.Stop()
 
