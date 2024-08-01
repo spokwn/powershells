@@ -138,10 +138,15 @@ Foreach ($Sid in $Users) {
                     
                     $signature = Get-FileSignature -FilePath $path
                     
+                    if ($signature -like "*Manthe Industries, LLC*") {
+                        $signature = "NotSigned (vape client)"
+                    }
+                    
                     $Bam += [PSCustomObject]@{
                         'Last Execution User Time' = $TimeUser
                         Path = $path
                         'Digital Signature' = $signature
+                        'File Name' = $f
                     }
                 }
             }
