@@ -136,10 +136,10 @@ Foreach ($Sid in $Users) {
                     
                     $path = Convert-DevicePathToDriveLetter -DevicePath $item -DeviceMappings $deviceMappings
                     
-                    $signature = Get-FileSignature -FilePath $path
-                    
-                    if ($signature -like "*Manthe Industries*") {
-                        $signature = "NotSigned (vape client)"
+                    $signerName = $signature.SignerCertificate.Subject
+
+                    if ($signerName -like "*Manthe Industries, LLC*") {
+                        $signatureStatus = "NotSigned (vape client)"
                     }
                     
                     $Bam += [PSCustomObject]@{
