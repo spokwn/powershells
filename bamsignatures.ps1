@@ -73,6 +73,10 @@ function Get-FileSignature {
     if (Test-Path $FilePath) {
         $signature = Get-AuthenticodeSignature -FilePath $FilePath
 
+        if ($null -eq $signature -or $signature.Status -eq $null) {
+            return "Unknown"
+        }
+
         if ($signature.Status -eq 'Valid') {
             if ($signature.SignerCertificate.Subject -like "*Manthe Industries, LLC*") {
                 return "Not signed (vapeclient)"
@@ -86,6 +90,7 @@ function Get-FileSignature {
         return "Deleted"
     }
 }
+
 
 $oldestConnectTime = Get-OldestConnectTime
 
@@ -140,8 +145,6 @@ Foreach ($Sid in $Users) {
                     {Split-path -leaf ($item).TrimStart()} else {$item}
                     
                     $path = Convert-DevicePathToDriveLetter -DevicePath $item -DeviceMappings $deviceMappings
-                    
-                   
                     
                     $Bam += [PSCustomObject]@{
                         'Last Execution User Time' = $TimeUser
