@@ -88,7 +88,6 @@ function Get-FileSignature {
 }
 
 
-
 $oldestConnectTime = Get-OldestConnectTime
 
 $deviceMappings = Get-DeviceMappings
@@ -144,7 +143,7 @@ Foreach ($Sid in $Users) {
                     $path = Convert-DevicePathToDriveLetter -DevicePath $item -DeviceMappings $deviceMappings
                     
                     $signature = Get-FileSignature -FilePath $path
-
+                    
                     $Bam += [PSCustomObject]@{
                         'Last Execution User Time' = $TimeUser
                         Path = $path
