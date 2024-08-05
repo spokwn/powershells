@@ -138,7 +138,7 @@ Foreach ($Sid in $Users) {
                     
                     $signature = Get-FileSignature -FilePath $path
                     
-                    if ($signature -like "Manthe Industries, LLC") {
+                    if ($signature -like "*Manthe Industries*") {
                         $signature = "NotSigned (vape client)"
                     }
                     
