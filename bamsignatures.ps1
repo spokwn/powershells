@@ -72,17 +72,8 @@ function Get-FileSignature {
     )
     if (Test-Path $FilePath) {
         $signature = Get-AuthenticodeSignature -FilePath $FilePath
-
-        if ($null -eq $signature -or $signature.Status -eq $null) {
-            return "Unknown"
-        }
-
         if ($signature.Status -eq 'Valid') {
-            if ($signature.SignerCertificate.Subject -like "*Manthe Industries, LLC*") {
-                return "Not signed (vapeclient)"
-            } else {
-                return "Signed"
-            }
+            return "Signed"
         } else {
             return "Not signed"
         }
