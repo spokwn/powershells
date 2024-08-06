@@ -290,9 +290,11 @@ $ContenidoHtml = @'
   display: flex;
   justify-content: space-between;
   background-color: #f8f8f8;
-  position: absolute;
+  position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
+  box-sizing: border-box;
 }
       .credit-info a {
         color: var(--primary-color);
