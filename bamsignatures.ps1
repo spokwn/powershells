@@ -281,12 +281,17 @@ $ContenidoHtml = @'
       .fade-in {
         /* animation: fadeIn 0.15s ease-out; */
       }
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   display: flex;
   flex-direction: column;
 }
 
-.main-content {
+main {
   flex: 1;
 }
 
@@ -334,8 +339,8 @@ footer a:hover::after {
 
     </style>
   </head>
-  <body>
-<div class="main-content">
+ <body>
+  <main>
     <div class="search-container fade-in">
       <input type="text" id="search" placeholder="Search..." />
     </div>
@@ -351,12 +356,13 @@ footer a:hover::after {
       </thead>
       <tbody></tbody>
     </table>
-</div>
-    <footer class="fade-in">
-  Made by espouken
-  <a href="https://discordapp.com/users/1149799913727721485" target="_blank">Discord</a>
-  <a href="https://github.com/spokwn" target="_blank">Github</a>
-</footer>
+  </main>
+
+  <footer class="fade-in">
+    Made by espouken
+    <a href="https://discordapp.com/users/1149799913727721485" target="_blank">Discord</a>
+    <a href="https://github.com/spokwn" target="_blank">Github</a>
+  </footer>
 
 
     <script>
