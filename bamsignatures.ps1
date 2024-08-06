@@ -181,7 +181,7 @@ $ContenidoHtml = @'
         background-color: var(--background-color);
         color: var(--text-color);
         margin: 0;
-        padding: 20px;
+        padding: 0px 20px;
         transition: all 0.1s ease;
       }
       h1 {
