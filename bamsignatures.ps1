@@ -192,7 +192,11 @@ $ContenidoHtml = @'
         font-size: 2.5em;
       }
       .search-container {
-        margin-bottom: 20px;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 1000;
         background-color: var(--surface-color);
         padding: 15px;
         border-radius: 8px;
@@ -220,7 +224,7 @@ $ContenidoHtml = @'
         width: 100%;
         border-collapse: separate;
         border-spacing: 0 8px;
-        margin-top: 20px;
+        margin-top: 90px; /* Ajustado para dejar espacio para la barra de búsqueda fija */
       }
       th,
       td {
@@ -283,6 +287,8 @@ $ContenidoHtml = @'
         font-size: 0.9em;
         color: var(--text-color);
         opacity: 0.7;
+        display: flex;
+        justify-content: space-between;
       }
       .credit-info a {
         color: var(--primary-color);
@@ -333,9 +339,9 @@ $ContenidoHtml = @'
 
     <div class="credit-info fade-in">
       Made by espouken
-      <br>
+
       <a href="https://discordapp.com/users/1149799913727721485" target="_blank">Discord</a>
-      <br>
+
       <a href="https://github.com/spokwn" target="_blank">Github</a>
     </div>
 
