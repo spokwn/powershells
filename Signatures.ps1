@@ -105,6 +105,10 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
                         $signatureStatus = "NotSigned (vape client)"
                     }
 
+                    if ($signerName -like "*Slinkware*") {
+                        return "Not signed (slinky)"
+                    }
+
                     $results += [pscustomobject]@{
                         Name = $fileName
                         Path = $path
