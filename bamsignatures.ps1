@@ -281,49 +281,51 @@ $ContenidoHtml = @'
       .fade-in {
         /* animation: fadeIn 0.15s ease-out; */
       }
-      .credit-info {
+      footer {
   text-align: center;
-  padding: 20px 0;
+  margin-top: 20px;
   font-size: 0.9em;
   color: var(--text-color);
   opacity: 0.7;
   display: flex;
   justify-content: space-between;
-  background-color: #f8f8f8;
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  box-sizing: border-box;
+  background-color: var(--background-color); /* Adjust as needed */
+  padding: 10px 0;
 }
-      .credit-info a {
-        color: var(--primary-color);
-        text-decoration: none;
-        position: relative;
-        transition: color 0.18s ease-in-out;
-      }
 
-      .credit-info a:hover {
-        color: #33a3ff;
-      }
-      .credit-info a::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: #33a3ff;
-        color: #33a3ff;
-        bottom: -1px;
-        left: 0;
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.18s ease-in-out;
-      }
+footer a {
+  color: var(--primary-color);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.18s ease-in-out;
+}
 
-      .credit-info a:hover::after {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
+footer a:hover {
+  color: #33a3ff;
+}
+
+footer a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #33a3ff;
+  color: #33a3ff;
+  bottom: -1px;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.18s ease-in-out;
+}
+
+footer a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
     </style>
   </head>
   <body>
@@ -343,13 +345,12 @@ $ContenidoHtml = @'
       <tbody></tbody>
     </table>
 
-    <div class="credit-info fade-in">
-      Made by espouken
+    <footer class="fade-in">
+  Made by espouken
+  <a href="https://discordapp.com/users/1149799913727721485" target="_blank">Discord</a>
+  <a href="https://github.com/spokwn" target="_blank">Github</a>
+</footer>
 
-      <a href="https://discordapp.com/users/1149799913727721485" target="_blank">Discord</a>
-
-      <a href="https://github.com/spokwn" target="_blank">Github</a>
-    </div>
 
     <script>
       const entries = [
