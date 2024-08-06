@@ -281,7 +281,7 @@ $ContenidoHtml = @'
       .fade-in {
         /* animation: fadeIn 0.15s ease-out; */
       }
-      footer .credit-info {
+      .credit-info {
   text-align: center;
   padding: 20px 0;
   font-size: 0.9em;
