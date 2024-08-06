@@ -281,18 +281,15 @@ $ContenidoHtml = @'
       .fade-in {
         /* animation: fadeIn 0.15s ease-out; */
       }
-      footer {
+footer {
   text-align: center;
   margin-top: 20px;
   font-size: 0.9em;
   color: var(--text-color);
-  opacity: 0.7;
   display: flex;
   justify-content: space-between;
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  background-color: var(--background-color); /* Adjust as needed */
+  background-color: var(--background-color);
   padding: 10px 0;
 }
 
@@ -325,6 +322,7 @@ footer a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }
+
 
     </style>
   </head>
