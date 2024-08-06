@@ -17,6 +17,9 @@ function Get-FileSignature {
     param (
         [string]$FilePath
     )
+    if ([string]::IsNullOrWhiteSpace($FilePath)) {
+        return "Unknown"
+    }
     if (Test-Path $FilePath) {
         $signature = Get-AuthenticodeSignature -FilePath $FilePath
         if ($signature.Status -eq 'Valid') {
