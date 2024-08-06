@@ -281,15 +281,19 @@ $ContenidoHtml = @'
       .fade-in {
         /* animation: fadeIn 0.15s ease-out; */
       }
-      .credit-info {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.9em;
-        color: var(--text-color);
-        opacity: 0.7;
-        display: flex;
-        justify-content: space-between;
-      }
+      footer .credit-info {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9em;
+  color: var(--text-color);
+  opacity: 0.7;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
       .credit-info a {
         color: var(--primary-color);
         text-decoration: none;
