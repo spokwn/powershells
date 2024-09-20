@@ -12,3 +12,5 @@ why dont upload it in a separate repo as any other project?
 the main journal parse is basically stolen from [Journaltrace](https://github.com/ponei/JournalTrace) and the main replace part is the worst code i've ever seen in my life, but it works!!
 
 still, its not obfuscated, if u wanna see its code, use dnspy, it's not ratted..
+
+if u wanna use not how my scripts use it, you can, it follows the same "Normal" and "CLI" format as my activitiescache repo.
