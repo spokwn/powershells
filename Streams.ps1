@@ -1,4 +1,3 @@
-Write-Host "Using directory: $Folder" -ForegroundColor White
 $response = Read-Host "Do you want to search recursively in subdirectories? (y/n)"
 $Folder = (Get-Location).Path
 
