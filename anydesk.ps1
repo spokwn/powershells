@@ -10,7 +10,7 @@ if (Test-Path $helperExe) {
     Write-Host "AnyDesk executable not found in the helper folder."
     Write-Host "[1] Download the latest AnyDesk version (version 9)"
     Write-Host "[2] Download the free-recording AnyDesk version (version 7)"
-	Write-Host "WARNING: The free-recording version (version 7) may be susceptible to some exploits."
+	Write-Host "WARNING: The free-recording version (version 7) is susceptible to some exploits."
     do { $choice = Read-Host "Enter 1 or 2" } while ($choice -ne "1" -and $choice -ne "2")
     if ($choice -eq "1") {
         $downloadUrl = "https://download.anydesk.com/AnyDesk.exe"
