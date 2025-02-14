@@ -102,8 +102,8 @@ if ($proc) { try { $proc | Stop-Process -Force } catch {} }
 if (Test-Path $ANYDESK_APPDATA) {
     Set-Location $ANYDESK_APPDATA
     Write-Host ""
-    Write-Host "Cleaning AnyDesk AppData folder..."
-    Write-Host "Protected elements (not to be deleted):"
+    Write-Host "Cleaning AnyDesk's ads data..."
+    Write-Host "Keeping elements:"
     $protectedItems = @("user.conf", "thumbnails", "chat")
     foreach ($item in $protectedItems) { if (Test-Path $item) { Write-Host " - $item" } }
     Get-ChildItem -Directory | Where-Object { $_.Name -notin @("thumbnails", "chat") } | ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
